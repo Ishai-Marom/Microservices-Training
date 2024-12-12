@@ -15,10 +15,9 @@ namespace InitialProject
             Console.WriteLine("Hello, World!");
             Console.WriteLine("Hello, World!");
 
-            TryingClass2 a = new TryingClass2();
-            a.first = "5";
-            a.second = "bi";
-            Console.WriteLine(a.first + a.second);
+            TryingClass a = new TryingClass("5", "bi");
+            a.FirstName = "5";
+            a.LastName = "bi";
 
             Repository m = new InMemoryRepository();
 
@@ -27,6 +26,14 @@ namespace InitialProject
             m.delete("1");
 
             Console.WriteLine("The returned value is " + v);
+
+            Repository redis = new RedisRepository();
+
+            var redisValue = redis.get("Ron2");
+
+            Console.WriteLine("Value from redis is " + redisValue);
+
+            redis.delete("Ron2");
         }
     }
 }

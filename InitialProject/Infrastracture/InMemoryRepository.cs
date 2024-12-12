@@ -5,17 +5,17 @@ namespace InitialProject.Infrastracture
 {
     public class InMemoryRepository : Repository
     {
-        private IDictionary<String, Object> _objectCache;
+        private IDictionary<String, TryingClass> _objectCache;
 
         public InMemoryRepository()
         {
-            _objectCache = new Dictionary<String, Object>();
+            _objectCache = new Dictionary<String, TryingClass>();
         }
 
         /**
          * A method for inserting data for a dictionary repository.
          */
-        public void put(string key, object value)
+        public void put(string key, TryingClass value)
         {
             Console.WriteLine("PUT");
             _objectCache.Add(key, value);
@@ -24,7 +24,7 @@ namespace InitialProject.Infrastracture
         /**
          * A method for returning the data from the dictionary with the given key.
          */
-        public object get(string key)
+        public TryingClass get(string key)
         {
             Console.WriteLine("GET");
             return _objectCache[key];

@@ -3,13 +3,14 @@
 namespace InitialProject
 {
 
-	public class TryingClass
-	{
-		public string first;
-		public string second;
+	public class TryingClass(string FirstName, string SecondName)
+    {
+        public string FirstName { get; set; } = FirstName;
+        public string LastName { get; set; } = SecondName;
 
-		public TryingClass()
+        public override string ToString() 
 		{
+			return $"FirstName={FirstName}, LastName={LastName}";
 		}
 	}
 }
