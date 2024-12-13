@@ -3,12 +3,12 @@
 
 namespace InitialProject.core
 {
-	public interface Repository
+	internal interface Repository
 	{
 		/**
 		 * A method for inserting data for a dictionary repository.
 		 */
-		void put(string key, TryingClass value);
+		void update(TryingClass value);
 
 		/**
 		 * A method for returning the data from the dictionary with the given key.

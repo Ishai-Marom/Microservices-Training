@@ -9,7 +9,7 @@ using StackExchange.Redis;
 
 namespace InitialProject.Infrastracture
 {
-    public class RedisRepository : Repository
+    internal class RedisRepository : Repository
     {
 
         private IDatabase _database;
@@ -26,15 +26,17 @@ namespace InitialProject.Infrastracture
             var dict = value.ToDictionary();
 
             return new TryingClass(
+                            dict[new RedisValue("id")].ToString(),
                             dict[new RedisValue("FirstName")].ToString(),
                             dict[new RedisValue("LastName")].ToString());
         }
 
-        public void put(string key, TryingClass value)
+        public void update(TryingClass value)
         {
             _database.HashSet(
-                key,
+                value.ID,
                 [
+                    new ("id", value.ID),
                     new ("FirstName", value.FirstName),
                     new ("LastName", value.LastName)
                 ]);

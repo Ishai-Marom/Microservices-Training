@@ -10,30 +10,29 @@ namespace InitialProject
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
-            Console.WriteLine("Hello, World!");
-            Console.WriteLine("Hello, World!");
-            Console.WriteLine("Hello, World!");
-
-            TryingClass a = new TryingClass("5", "bi");
-            a.FirstName = "5";
-            a.LastName = "bi";
-
-            Repository m = new InMemoryRepository();
-
-            m.put("1", a);
-            var v = m.get("1");
-            m.delete("1");
-
-            Console.WriteLine("The returned value is " + v);
+            TryingClass a = new TryingClass("id", "6", "8");
 
             Repository redis = new RedisRepository();
 
-            var redisValue = redis.get("Ron2");
+            redis.update(a);
+
+            var redisValue = redis.get(a.ID);
 
             Console.WriteLine("Value from redis is " + redisValue);
 
-            redis.delete("Ron2");
+            redis.delete(a.ID);
+
+            TryingClass b = new TryingClass("id2", "hello", "AAAAAAAAAA");
+
+            Repository postgres = new PostgresSQLRepository();
+
+            postgres.update(b);
+
+            var postgresValue = postgres.get(b.ID);
+
+            Console.WriteLine("Value from postgres is " + postgresValue);
+
+            postgres.delete(b.ID);
         }
     }
 }

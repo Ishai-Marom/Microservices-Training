@@ -3,22 +3,22 @@ using InitialProject.core;
 
 namespace InitialProject.Infrastracture
 {
-    public class InMemoryRepository : Repository
+    internal class InMemoryRepository : Repository
     {
-        private IDictionary<String, TryingClass> _objectCache;
+        private IDictionary<string, TryingClass> _objectCache;
 
         public InMemoryRepository()
         {
-            _objectCache = new Dictionary<String, TryingClass>();
+            _objectCache = new Dictionary<string, TryingClass>();
         }
 
         /**
          * A method for inserting data for a dictionary repository.
          */
-        public void put(string key, TryingClass value)
+        public void update(TryingClass value)
         {
             Console.WriteLine("PUT");
-            _objectCache.Add(key, value);
+            _objectCache.Add(value.ID, value);
         }
 
         /**
