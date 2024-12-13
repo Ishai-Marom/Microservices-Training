@@ -1,42 +1,38 @@
-﻿using System;
-using InitialProject.core;
+﻿using InitialProject.core;
 
 namespace InitialProject.Infrastracture
 {
-    internal class InMemoryRepository : Repository
+    internal class InMemoryRepository : IRepository
     {
-        private IDictionary<string, TryingClass> _objectCache;
+        private readonly IDictionary<string, SomeDataEntity> objectCache;
 
         public InMemoryRepository()
         {
-            _objectCache = new Dictionary<string, TryingClass>();
+            objectCache = new Dictionary<string, SomeDataEntity>();
         }
 
         /**
          * A method for inserting data for a dictionary repository.
          */
-        public void update(TryingClass value)
+        public void Update(SomeDataEntity value)
         {
-            Console.WriteLine("PUT");
-            _objectCache.Add(value.ID, value);
+            objectCache.Add(value.ID, value);
         }
 
         /**
          * A method for returning the data from the dictionary with the given key.
          */
-        public TryingClass get(string key)
+        public SomeDataEntity Get(string key)
         {
-            Console.WriteLine("GET");
-            return _objectCache[key];
+            return objectCache[key];
         }
 
         /*
          * A method for deleting data from the dictionary with the given key.
          */
-        public void delete(string key)
+        public void Delete(string key)
         {
-            Console.WriteLine("DELETE");
-            _objectCache.Remove(key);
+            objectCache.Remove(key);
         }
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace InitialProject
+﻿namespace InitialProject.core
 {
 
-	internal class TryingClass(string id, string FirstName, string SecondName)
+	internal class SomeDataEntity(string id, string FirstName, string SecondName)
     {
 		private readonly string id = id;
 

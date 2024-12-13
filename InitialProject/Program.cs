@@ -1,5 +1,4 @@
-﻿using System;
-using InitialProject.core;
+﻿using InitialProject.core;
 using InitialProject.Infrastracture;
 
 
@@ -10,29 +9,41 @@ namespace InitialProject
 
         public static void Main(string[] args)
         {
-            TryingClass a = new TryingClass("id", "6", "8");
+            SomeDataEntity firstDataEntity = new SomeDataEntity("id", "6", "8");
 
-            Repository redis = new RedisRepository();
+            IRepository redis = new RedisRepository();
 
-            redis.update(a);
+            redis.Update(firstDataEntity);
 
-            var redisValue = redis.get(a.ID);
+            var redisValue = redis.Get(firstDataEntity.ID);
 
             Console.WriteLine("Value from redis is " + redisValue);
 
-            redis.delete(a.ID);
+            redis.Delete(firstDataEntity.ID);
 
-            TryingClass b = new TryingClass("id2", "hello", "AAAAAAAAAA");
+            SomeDataEntity secondDataEntity = new SomeDataEntity("id2", "hello", "AAAAAAAAAA");
 
-            Repository postgres = new PostgresSQLRepository();
+            IRepository postgres = new PostgresSQLRepository();
 
-            postgres.update(b);
+            postgres.Update(secondDataEntity);
 
-            var postgresValue = postgres.get(b.ID);
+            var postgresValue = postgres.Get(secondDataEntity.ID);
 
             Console.WriteLine("Value from postgres is " + postgresValue);
 
-            postgres.delete(b.ID);
+            postgres.Delete(secondDataEntity.ID);
+
+            SomeDataEntity thirdDataEntity = new SomeDataEntity("id3", "hello", "BBBBBBBBBB");
+
+            IRepository inMemory = new PostgresSQLRepository();
+
+            postgres.Update(thirdDataEntity);
+
+            var inMemoryValue = postgres.Get(thirdDataEntity.ID);
+
+            Console.WriteLine("Value from postgres is " + inMemoryValue);
+
+            postgres.Delete(thirdDataEntity.ID);
         }
     }
 }

@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using InitialProject.core;
 using Npgsql;
 
 namespace InitialProject.Infrastracture
 {
-    internal class PostgresSQLRepository : Repository
+    internal class PostgresSQLRepository : IRepository
     {
         private NpgsqlConnection connection;
         
@@ -24,7 +19,7 @@ namespace InitialProject.Infrastracture
             connection.Open();
         }
 
-        public void delete(string key)
+        public void Delete(string key)
         {
             string table = "mytable";
             var query = $"DELETE FROM {table} WHERE id = @id";
@@ -35,7 +30,7 @@ namespace InitialProject.Infrastracture
             cmd.ExecuteNonQuery();
         }
 
-        public TryingClass get(string key)
+        public SomeDataEntity Get(string key)
         {
             string table = "mytable";
             string query = $"SELECT * from {table} where id = @id";
@@ -45,13 +40,13 @@ namespace InitialProject.Infrastracture
             using var reader = cmd.ExecuteReader();
             reader.Read();
 
-            return new TryingClass(
+            return new SomeDataEntity(
                 reader["id"].ToString(),
                 reader["first_name"].ToString(),
                 reader["last_name"].ToString());
         }
 
-        public void update(TryingClass value)
+        public void Update(SomeDataEntity value)
         {
             string table = "mytable";
             //string query = $"UPDATE {table} SET first_name = {value.ID}, last_name = {value.FirstName} WHERE id = {value.LastName}";
