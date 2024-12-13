@@ -71,9 +71,10 @@ Sources:
 3) run commmand: `docker run -p 8081:8081 sosedoff/pgweb`
 4) Enter the GUI using http://localhost:8081
 5) Login:
-![alt text](pgweb_login_page.png)
 
-    - Host = the ip of your computer (using localhost won't work here).
+![image](https://github.com/user-attachments/assets/9ff10f9d-a9fa-4069-8d1d-3f94ba6b280f)
+
+    - Host = the current ip of your computer (using localhost won't work here).
     - port = 5432
     - Username = the username you set up for your postgres container.
     - Password = <your-password>
