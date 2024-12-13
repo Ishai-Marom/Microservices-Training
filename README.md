@@ -10,7 +10,7 @@ Having 2 different, custom created microservices that talk together with each ot
 Along the way, one team may decide to how their slice of the architechture works. For example, which database they communicate with.
 The other team is unaffected by this choice made by the first team.
 
-### Motive
+### The Motive
 
 We essentially simulate a microservices system created by 2 different teams.
 
@@ -26,6 +26,17 @@ This is how we'll simulate the independence between the teams.
 We'll accept data loss that will happen when the first team decide to switch their database. While in reality the first team will need to make sure their persistant data have been transfered to the new database, and there are ways of doing so, it is outside the scope of this exercise.
 
 ## Set up
+
+### IDE
+
+Some options:
+- Using visua Studio 2022. Best option if it works properly for you.
+- Using Visual Studion Code with at least these extensions:
+    - .NET Install Tool
+    - C#
+    - C# Dev Kit
+    - C# Extensions
+- Any other you see fit.
 
 Here we'll write some infrastructure set up needed to be done for the excercise.
 
@@ -67,7 +78,7 @@ Sources:
 - https://github.com/sosedoff/pgweb?tab=readme-ov-file
 
 1) open cmd
-2) run command: `docker run --name <your-container-name> -e POSTGRES_PASSWORD=<your-password>  -p 5432:5432 -d postgres`
+2) run command: `docker run --name <your-container-name> -e POSTGRES_PASSWORD=<your-password> -p 5432:5432 -d postgres`
 3) run commmand: `docker run -p 8081:8081 sosedoff/pgweb`
 4) Enter the GUI using http://localhost:8081
 5) Login:
@@ -78,5 +89,5 @@ Sources:
     - port = 5432
     - Username = the username you set up for your postgres container.
     - Password = <your-password>
-    - Database = the name of the  you want to connect to. There always exists a default database called "postgres".
+    - Database = the name of the you want to connect to. There always exists a default database called "postgres".
     - SSL Mode = disable.

@@ -3,26 +3,25 @@ using Npgsql;
 
 namespace InitialProject.Infrastracture
 {
+    /*
+    * A PostgreSQL implementation of the IRepository interface.
+    */
     internal class PostgresSQLRepository : IRepository
     {
+
+        private readonly static Config CONFIG = new Config(); 
         private NpgsqlConnection connection;
         
         public PostgresSQLRepository()
         {
-            string host = "localhost";
-            string username = "postgres";
-            string password = "example";
-            string database = "postgres";
-
-            var connString = $"Host={host};Username={username};Password={password};Database={database}";
+            var connString = $"Host={CONFIG.Host};Username={CONFIG.Username};Password={CONFIG.Password};Database={CONFIG.DatabaseName};";
             connection = new NpgsqlConnection(connString);
             connection.Open();
         }
 
         public void Delete(string key)
         {
-            string table = "mytable";
-            var query = $"DELETE FROM {table} WHERE id = @id";
+            var query = $"DELETE FROM {CONFIG.TableName} WHERE id = @id";
 
             using var cmd = new NpgsqlCommand(query, connection);
             cmd.Parameters.AddWithValue("id", key);
@@ -32,8 +31,7 @@ namespace InitialProject.Infrastracture
 
         public SomeDataEntity Get(string key)
         {
-            string table = "mytable";
-            string query = $"SELECT * from {table} where id = @id";
+            string query = $"SELECT * from {CONFIG.TableName} where id = @id";
 
             using var cmd = new NpgsqlCommand(query, connection);
             cmd.Parameters.AddWithValue("id", key);
@@ -48,10 +46,8 @@ namespace InitialProject.Infrastracture
 
         public void Update(SomeDataEntity value)
         {
-            string table = "mytable";
-            //string query = $"UPDATE {table} SET first_name = {value.ID}, last_name = {value.FirstName} WHERE id = {value.LastName}";
             string query = $"""
-                INSERT INTO {table} (id, first_name, last_name)
+                INSERT INTO {CONFIG.TableName} (id, first_name, last_name)
                 VALUES (@id, @first_name, @last_name)
                 ON CONFLICT (id)
                 DO UPDATE SET
@@ -65,6 +61,23 @@ namespace InitialProject.Infrastracture
             cmd.Parameters.AddWithValue("last_name", value.LastName);
 
             cmd.ExecuteNonQuery();
+        }
+
+        /*
+        * A helper class with configuration for logging in to postgres.
+        */
+        private class Config {
+            // The DNS of the server host. Ours will be localhost.
+            public string Host {get; private set;} = "localhost";
+            // The username defined for logining in to postgres.
+            public string Username {get; private set;} = "postgres";
+            // The password defined for logining in to postgres.
+            public string Password {get; private set;} = "example";
+            // The name of the database we want to connect to.
+            public string DatabaseName {get; private set;} = "postgres";
+
+            // The name of the table within the database will write to and read from.
+            public string TableName {get; private set;} = "mytable";
         }
     }
 }

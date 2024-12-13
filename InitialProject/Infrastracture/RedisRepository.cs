@@ -3,22 +3,27 @@ using StackExchange.Redis;
 
 namespace InitialProject.Infrastracture
 {
+    /*
+    * A Redis implementation of the IRepository interface.
+    */
     internal class RedisRepository : IRepository
     {
+        private readonly static Config CONFIG = new Config(); 
 
-        private IDatabase _database;
+        private IDatabase database;
 
         public RedisRepository()
         {
-            var connection = ConnectionMultiplexer.Connect("localhost:6379");
-            _database = connection.GetDatabase();
+            var connection = ConnectionMultiplexer.Connect(CONFIG.ConnectionConfiguration);
+            database = connection.GetDatabase();
         }
 
         public SomeDataEntity Get(string key)
         {
-            var value = _database.HashGetAll(key);
+            var value = database.HashGetAll(key);
             var dict = value.ToDictionary();
 
+            /*Converting the (field-name, field-value) dictionary read from redis to data for the class.*/
             return new SomeDataEntity(
                             dict[new RedisValue("id")].ToString(),
                             dict[new RedisValue("FirstName")].ToString(),
@@ -27,7 +32,10 @@ namespace InitialProject.Infrastracture
 
         public void Update(SomeDataEntity value)
         {
-            _database.HashSet(
+            /* Creating a hash-set pf key-value data that represent the fields in redis.
+                left value = field name. right value = field data.
+            */
+            database.HashSet(
                 value.ID,
                 [
                     new ("id", value.ID),
@@ -38,7 +46,16 @@ namespace InitialProject.Infrastracture
 
         public void Delete(string key)
         {
-            _database.KeyDelete(key);
+            database.KeyDelete(key);
+        }
+
+
+        /*
+        * A helper class with configuration for logging in to redis.
+        */
+        private class Config {
+            // The configuration for connecting to redis.
+            public string ConnectionConfiguration {get; private set;} = "localhost:6379";
         }
     }
 }
