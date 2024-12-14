@@ -101,3 +101,9 @@ CREATE TABLE mytable (
 );
 ```
 Make matching changes if you need.
+
+## Important
+
+Because the containers connect to databases, then they need to know who is the database host. When developing locally then the host is simply `localhost`, but when moving to running containers this is no longer the case.
+In that case you'll need to put your computer current ip for it to work.
+I added an environment variable called `HOST` that will tell the app that the databases server is running on the host ip written there, otherwise it will point them to `localhost`.
