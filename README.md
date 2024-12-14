@@ -1,13 +1,13 @@
 # Microservices-Training
 
-## Excercise
+## Exercise
 
 In this exercise we'll have a little experience of how to create a small microservices based system.
 
 ### The Goal
 
 Having 2 different, custom created microservices that talk together with each other.
-Along the way, one team may decide to how their slice of the architechture works. For example, which database they communicate with.
+Along the way, one team may decide to how their slice of the architecture works. For example, which database they communicate with.
 The other team is unaffected by this choice made by the first team.
 
 ### The Motive
@@ -23,22 +23,22 @@ This is how we'll simulate the independence between the teams.
 
 ### Note
 
-We'll accept data loss that will happen when the first team decide to switch their database. While in reality the first team will need to make sure their persistant data have been transfered to the new database, and there are ways of doing so, it is outside the scope of this exercise.
+We'll accept data loss that will happen when the first team decide to switch their database. While in reality the first team will need to make sure their persistent data have been transfered to the new database, and there are ways of doing so, it is outside the scope of this exercise.
 
 ## Set up
 
 ### IDE
 
 Some options:
-- Using visua Studio 2022. Best option if it works properly for you.
-- Using Visual Studion Code with at least these extensions:
+- Using Visual Studio 2022. Best option if it works properly for you.
+- Using Visual Studio Code with at least these extensions:
     - .NET Install Tool
     - C#
     - C# Dev Kit
     - C# Extensions
 - Any other you see fit.
 
-Here we'll write some infrastructure set up needed to be done for the excercise.
+Here we'll write some infrastructure set up needed to be done for the exercise.
 
 ### Docker desktop
 
@@ -50,9 +50,14 @@ We'll run our system using images that run on the Docker Desktop application ava
 
 Here we'll manage our containers.
 
+### Building an image
+Go to the directory that contains the Dockerfile and run the command:
+`docker build -t <image-repository-name>:<image-tag> -f Dockerfile .`
+You can choose whichever <image-repository-name> and <image-tag> as you would like. I recommend avoiding using `latest` as the <image-tag> because docker images use this tag as the default for pulling images.
+
 ### First database: Redis
 
-Redis is a lightweight, quick, distributed key-value store that saves data on a RAM. But it can be used as a database. It has many modules, but in our example we have wanted to keep things as bare-bones as ppossible. Therefore, we're using basic Redis key-value store.
+Redis is a lightweight, quick, distributed key-value store that saves data on a RAM. But it can be used as a database. It has many modules, but in our example we have wanted to keep things as bare-bones as possible. Therefore, we're using basic Redis key-value store.
 
 Apps:
 - Redis = Our database management system. By the official Redis company.
@@ -71,7 +76,7 @@ PostgreSql is a well known, open-source SQL Database Management System (DBMS) th
 
 Apps:
 - PostgreSQL = Our database management system. By the official PostgreSQL.
-- pgweb = our GUI to the PostgreSQL database. By an open-source contributer found on github
+- pgweb = our GUI to the PostgreSQL database. By an open-source contributer found on git-hub
 
 Sources:
 - https://www.postgresql.org/
@@ -79,7 +84,7 @@ Sources:
 
 1) open cmd
 2) run command: `docker run --name postgres -e POSTGRES_PASSWORD=<your-password> -p 5432:5432 -d postgres`
-3) run commmand: `docker run --name pgweb -p 8081:8081 -d sosedoff/pgweb`
+3) run command: `docker run --name pgweb -p 8081:8081 -d sosedoff/pgweb`
 4) Enter the GUI using http://localhost:8081
 5) Login:
 
@@ -92,7 +97,7 @@ Sources:
     - Database = the name of the you want to connect to. There always exists a default database called "postgres".
     - SSL Mode = disable.
 
-To create the table in the example code, run the follwing SQL command:
+To create the table in the example code, run the following SQL command:
 ```SQL
 CREATE TABLE mytable (
     id VARCHAR(50) PRIMARY KEY,

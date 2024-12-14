@@ -17,6 +17,29 @@ namespace InitialProject.Infrastracture
             var connString = $"Host={CONFIG.Host};Username={CONFIG.Username};Password={CONFIG.Password};Database={CONFIG.DatabaseName};";
             connection = new NpgsqlConnection(connString);
             connection.Open();
+
+            dropOldTable();
+            createTable();
+        }
+
+        private void dropOldTable()
+        {
+            var query = $@"DROP TABLE IF EXISTS {CONFIG.TableName}";
+            using var cmd = new NpgsqlCommand(query, connection);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        private void createTable() {
+            var query = $@"
+            CREATE TABLE {CONFIG.TableName} (
+                id VARCHAR(50) PRIMARY KEY,
+                first_name VARCHAR(50) NOT NULL,
+                last_name VARCHAR(50) NOT NULL
+            )";
+            using var cmd = new NpgsqlCommand(query, connection);
+
+            cmd.ExecuteNonQuery();
         }
 
         public void Delete(string key)
