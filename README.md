@@ -78,8 +78,8 @@ Sources:
 - https://github.com/sosedoff/pgweb?tab=readme-ov-file
 
 1) open cmd
-2) run command: `docker run --name <your-container-name> -e POSTGRES_PASSWORD=<your-password> -p 5432:5432 -d postgres`
-3) run commmand: `docker run -p 8081:8081 sosedoff/pgweb`
+2) run command: `docker run --name postgres -e POSTGRES_PASSWORD=<your-password> -p 5432:5432 -d postgres`
+3) run commmand: `docker run --name pgweb -p 8081:8081 -d sosedoff/pgweb`
 4) Enter the GUI using http://localhost:8081
 5) Login:
 
