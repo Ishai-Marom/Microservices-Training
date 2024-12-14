@@ -10,7 +10,7 @@ namespace WebAPIConsumer
         {
             using var client = new HttpClient();
             var host = Environment.GetEnvironmentVariable("HOST") ?? "localhost";
-            var port = Environment.GetEnvironmentVariable("") ?? "5186";
+            var port = Environment.GetEnvironmentVariable("PORT") ?? "5186";
 
             // POST
             var postRoute = $"http://{host}:{port}/AttemptNew";

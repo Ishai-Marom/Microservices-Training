@@ -18,6 +18,7 @@ namespace InitialProject.Infrastracture
             connection = new NpgsqlConnection(connString);
             connection.Open();
 
+            // In order to write/read from a postgres table, it needs to be created first.
             dropOldTable();
             createTable();
         }

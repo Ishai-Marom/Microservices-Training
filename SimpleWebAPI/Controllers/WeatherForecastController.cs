@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SimpleWebAPI.Controllers
 {
+    /**
+    * Auto generated example from Visual Studio
+    */
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase

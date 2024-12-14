@@ -40,6 +40,22 @@ Some options:
 
 Here we'll write some infrastructure set up needed to be done for the exercise.
 
+In this example, main solution and sub projects were created with Visual Studio 2022.
+I recommend creating project with this. I have no experience of doing it using Visual Studio Code.
+
+#### Server processes
+Were created using Visual Studio 2022 "Console App". Make sure you choose the C# version.
+
+#### Web API process
+Was created using Visual Studio 2022 "ASP.NET Core Web API". Make sure you choose the C# version.
+The custom controller was created using Visual Studio Code: <add> -> <controller> -> <empty controller> to the directory.
+I recommend creating classes (or at least controller) for this solution only using Visual Studio 2022 because of possible ways it might edit stuff in the environment.
+
+The external port is found within the `Properties\LaunchSetting.json` file
+When you run locally, it will link the API to that port.
+When you run in a container, it will use 8080 port. You'll need to use the following command to be able to reach the API properly:
+`docker run --name <container-name> -p <external-port>:8080 -d <image-name>:<image-tag>`
+
 ### Docker desktop
 
 We'll run our system using images that run on the Docker Desktop application available for free in windows.
@@ -54,6 +70,8 @@ Here we'll manage our containers.
 Go to the directory that contains the Dockerfile and run the command:
 `docker build -t <image-repository-name>:<image-tag> -f Dockerfile .`
 You can choose whichever <image-repository-name> and <image-tag> as you would like. I recommend avoiding using `latest` as the <image-tag> because docker images use this tag as the default for pulling images.
+
+Note, in case you create a new project and you want to copy an existing Dockerfile from these projects to the new one, you'll need to at least change the final line of that file.
 
 ### First database: Redis
 
@@ -97,18 +115,36 @@ Sources:
     - Database = the name of the you want to connect to. There always exists a default database called "postgres".
     - SSL Mode = disable.
 
-To create the table in the example code, run the following SQL command:
-```SQL
-CREATE TABLE mytable (
-    id VARCHAR(50) PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL
-);
-```
-Make matching changes if you need.
-
 ## Important
 
 Because the containers connect to databases, then they need to know who is the database host. When developing locally then the host is simply `localhost`, but when moving to running containers this is no longer the case.
 In that case you'll need to put your computer current ip for it to work.
 I added an environment variable called `HOST` that will tell the app that the databases server is running on the host ip written there, otherwise it will point them to `localhost`.
+
+
+### Exercise Note
+When running the containers, I personally was not able to talk with the API when running it like that:
+- Web API: run locally
+- API client service : run on a container.
+
+The rest I was able to run.
+- Both Locally
+- Both in a container
+- Reverse version:
+    - Web API: run in a container
+    - API client service: run locally.
+
+I'm not sure why, so if you encounter the same problem don't waste time on it. The other ways of running it should work as the guide tells you.
+
+### Final Note
+
+The code here is simply meant as an example of a simple microservice architecture. Do not consider this code as production ready in any way.
+- It does not guarantee Cyber-Security.
+- Its not backward or forward compatible.
+- Its not using best C# practices.
+- Its not using best practices for docker, or a docker orchestration infrastructure such as Kubernetes/Openshift.
+- Its not using service discovery properly
+- Its not even designed well.
+Its simply meant to have a little simulation of what its like to create microservices architecture so you could see benefits that this architecture gives you as written in the "The Motive" for this exercise.
+
+Good Luck :)

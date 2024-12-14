@@ -11,6 +11,11 @@ namespace SimpleWebAPI.Controllers
         private readonly DataRepository dataRepository;
         public AttemptNewController() 
         {
+            /**
+            * Created the current data repository as a singleton because as far as the runtime environment cares, when I used a regular dictionary in this class it emptied it every time.
+            * My guess is that it recreates this controller every time an HTTP command is received.
+            * Therefore, used a singleton so that memory will be saved between the HTTP commands.
+            */
             dataRepository = DataRepository.GetInstance();
         }
 
