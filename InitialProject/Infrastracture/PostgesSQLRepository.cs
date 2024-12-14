@@ -67,8 +67,8 @@ namespace InitialProject.Infrastracture
         * A helper class with configuration for logging in to postgres.
         */
         private class Config {
-            // The DNS of the server host. Ours will be localhost.
-            public string Host {get; private set;} = "localhost";
+            // The database server host.
+            public string Host {get; private set;} = Environment.GetEnvironmentVariable("HOST") ?? "localhost";
             // The username defined for logining in to postgres.
             public string Username {get; private set;} = "postgres";
             // The password defined for logining in to postgres.

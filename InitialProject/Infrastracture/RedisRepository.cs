@@ -54,8 +54,8 @@ namespace InitialProject.Infrastracture
         * A helper class with configuration for logging in to redis.
         */
         private class Config {
-            // The configuration for connecting to redis.
-            public string ConnectionConfiguration {get; private set;} = "localhost:6379";
+            // The database server host and port.
+            public string ConnectionConfiguration {get; private set;} = $"{Environment.GetEnvironmentVariable("HOST") ?? "localhost"}:6379";
         }
     }
 }

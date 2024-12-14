@@ -9,41 +9,47 @@ namespace InitialProject
 
         public static void Main(string[] args)
         {
-            SomeDataEntity firstDataEntity = new SomeDataEntity("id", "6", "8");
+            while (true) 
+            {
+                SomeDataEntity firstDataEntity = new SomeDataEntity("id", "6", "8");
+                Thread.Sleep(5000);
+                
+                // Redis
+                Console.WriteLine("Redis Start");
 
-            IRepository redis = new RedisRepository();
+                IRepository redis = new RedisRepository();
+                redis.Update(firstDataEntity);
+                var redisValue = redis.Get(firstDataEntity.ID);
+                Console.WriteLine("Value from redis is " + redisValue);
+                redis.Delete(firstDataEntity.ID);
 
-            redis.Update(firstDataEntity);
+                Console.WriteLine("Redis Start");
 
-            var redisValue = redis.Get(firstDataEntity.ID);
+                // Postgres
+                Console.WriteLine("Postgres Start");
 
-            Console.WriteLine("Value from redis is " + redisValue);
+                SomeDataEntity secondDataEntity = new SomeDataEntity("id2", "hello", "AAAAAAAAAA");
+                IRepository postgres = new PostgresSQLRepository();
+                postgres.Update(secondDataEntity);
+                var postgresValue = postgres.Get(secondDataEntity.ID);
+                Console.WriteLine("Value from postgres is " + postgresValue);
+                postgres.Delete(secondDataEntity.ID);
 
-            redis.Delete(firstDataEntity.ID);
+                Console.WriteLine("Postgres Start");
 
-            SomeDataEntity secondDataEntity = new SomeDataEntity("id2", "hello", "AAAAAAAAAA");
 
-            IRepository postgres = new PostgresSQLRepository();
+                // In Memory
+                Console.WriteLine("In Memory Start");
 
-            postgres.Update(secondDataEntity);
+                SomeDataEntity thirdDataEntity = new SomeDataEntity("id3", "hello", "BBBBBBBBBB");
+                IRepository inMemory = new InMemoryRepository();
+                inMemory.Update(thirdDataEntity);
+                var inMemoryValue = inMemory.Get(thirdDataEntity.ID);
+                Console.WriteLine("Value from in memory is " + inMemoryValue);
+                inMemory.Delete(thirdDataEntity.ID);
 
-            var postgresValue = postgres.Get(secondDataEntity.ID);
-
-            Console.WriteLine("Value from postgres is " + postgresValue);
-
-            postgres.Delete(secondDataEntity.ID);
-
-            SomeDataEntity thirdDataEntity = new SomeDataEntity("id3", "hello", "BBBBBBBBBB");
-
-            IRepository inMemory = new PostgresSQLRepository();
-
-            postgres.Update(thirdDataEntity);
-
-            var inMemoryValue = postgres.Get(thirdDataEntity.ID);
-
-            Console.WriteLine("Value from postgres is " + inMemoryValue);
-
-            postgres.Delete(thirdDataEntity.ID);
+                Console.WriteLine("In Memory End");
+            }
         }
     }
 }
