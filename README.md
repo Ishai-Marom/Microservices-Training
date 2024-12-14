@@ -91,3 +91,13 @@ Sources:
     - Password = <your-password>
     - Database = the name of the you want to connect to. There always exists a default database called "postgres".
     - SSL Mode = disable.
+
+To create the table in the example code, run the follwing SQL command:
+```SQL
+CREATE TABLE mytable (
+    id VARCHAR(50) PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL
+);
+```
+Make matching changes if you need.
