@@ -48,10 +48,10 @@ namespace WebAPIConsumer
                 try {
                     Thread.Sleep(5000);
 
-                    string busToUpdate = "Q";
+                    string busToUpdate = "to-add";
 
                     // TODO: Exercise
-                    // Check if Bus exists
+                    // Check if a Bus with the id "to-add" exists
                     // If it does, add one passenger to it.
                     // Otherwise, print that it was not found.
                 } catch (Exception) {
