@@ -56,7 +56,7 @@ When you run locally, it will link the API to that port.
 When you run in a container, it will use 8080 port. You'll need to use the following command to be able to reach the API properly:
 `docker run --name <container-name> -p <external-port>:8080 -d <image-name>:<image-tag>`
 if that does not work, try this:
-`docker run --name <container-name> -p 5186:8080 -e HOST=<computer-ip> -d <image-name>:<image-tag>`
+`docker run --name <container-name> -p <external-port>:8080 -e HOST=<computer-ip> -d <image-name>:<image-tag>`
 
 ### Docker desktop
 
