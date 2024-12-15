@@ -17,7 +17,7 @@ namespace SimpleWebAPI.Controllers
             * My guess is that it recreates this controller every time an HTTP command is received.
             * Therefore, used a singleton so that memory will be saved between the HTTP commands.
             */
-            busRepository = RedisBusRepository.GetInstance();
+            busRepository = PostgresSQLRepository.GetInstance();
         }
 
         [HttpGet("{id}")]
@@ -34,43 +34,6 @@ namespace SimpleWebAPI.Controllers
             return BadRequest("Bus is missing");
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(Bus), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Bus> CreateBus([FromBody] Bus bus)
-        {
-            if (bus == null)
-            {
-                return BadRequest("Bus is missing");
-            }
-
-            busRepository.Update(bus);
-            return CreatedAtAction(nameof(Get), new { id = bus.ID }, bus);
-        }
-
-        [HttpPut("{id}")]
-        [ProducesResponseType(typeof(Bus), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(Bus), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(Bus), StatusCodes.Status400BadRequest)]
-        public ActionResult<Bus> UpdateBus(string id, [FromBody] Bus bus)
-        {
-            if (bus == null)
-            {
-                return BadRequest("Bus is missing");
-            }
-
-
-
-            if (!busRepository.Contains(id))
-            {
-                return NotFound($"Bus with Id {id} not found");
-            }
-
-            busRepository.Update(bus);
-
-            return Ok(bus);
-        }
-
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(Bus), StatusCodes.Status404NotFound)]
@@ -80,6 +43,35 @@ namespace SimpleWebAPI.Controllers
             busRepository.Delete(id);
 
             return NoContent();
+        }
+
+        [HttpPost("createEmptyBus")]
+        [ProducesResponseType(typeof(Bus), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Bus), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Bus), StatusCodes.Status400BadRequest)]
+        public ActionResult<Bus> createDefaultBus([FromBody] BasicBusData basicBusData)
+        {
+            if (basicBusData == null)
+            {
+                return BadRequest("data is missing");
+            }
+
+            if (busRepository.Contains(basicBusData.ID))
+            {
+                return NotFound($"Bus with Id {basicBusData.ID} already exists");
+            }
+
+            Bus bus = new Bus(basicBusData.ID, basicBusData.driverName, basicBusData.Color, 0);
+
+            busRepository.Update(bus);
+            return CreatedAtAction(nameof(Get), new { id = bus.ID }, bus);
+         }
+
+        public class BasicBusData(string id, string driverName, string color) {
+            private string id = id;
+            public string ID {get {return id;} }
+            public string driverName {get; set;} = driverName;
+            public string Color {get; set;} = color;
         }
 
         [HttpPost("{id}/add-passenger")]

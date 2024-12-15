@@ -15,19 +15,7 @@ namespace WebAPIConsumer
             var host = Environment.GetEnvironmentVariable("HOST") ?? "localhost";
             var port = Environment.GetEnvironmentVariable("PORT") ?? "5186";
 
-            // POST
-            // var postRoute = $"http://{host}:{port}/Bus";
-            // var postData = new{ id = "Q", driverName = "AAAAAAAA", color = "BBBBBB", passengersCapacity = 15};
-            // var postResponse = client.PostAsJsonAsync(postRoute, postData).Result;
-
             // Console.WriteLine(postResponse.Content.ReadAsStringAsync().Result.ToString());
-
-            // // PUT
-            // var putRoute = $"http://{host}:{port}/Bus/Q";
-            // var putData = new{ id = "Q", driverName = "AAAAAAAA", color = "EEEEEEEEE", passengersCapacity = 30};
-            // var putResponse = client.PutAsJsonAsync(putRoute, putData).Result;
-
-            // Console.WriteLine(putResponse.Content.ReadAsStringAsync().Result.ToString());
 
             // // GET
             // var getRoute = $"http://{host}:{port}/Bus/Q";
@@ -42,6 +30,12 @@ namespace WebAPIConsumer
             // Console.WriteLine(deleteResponse.Content.ReadAsStringAsync().Result.ToString());
 
             Console.WriteLine("Strarting passengers entry app.");
+
+            // A command for creating an empty bus with the follwing data
+            // POST
+            var postRoute = $"http://{host}:{port}/Bus/createEmptyBus";
+            var postData = new{ id = "Q", driverName = "AAAAAAAA", color = "BBBBBB"};
+            var postResponse = client.PostAsJsonAsync(postRoute, postData).Result;
 
             while (true)
             {
