@@ -42,32 +42,25 @@ namespace WebAPIConsumer
             // Console.WriteLine(deleteResponse.Content.ReadAsStringAsync().Result.ToString());
 
             Console.WriteLine("Strarting passengers entry app.");
-            int x = 0;
 
             while (true)
             {
                 try {
                     Thread.Sleep(5000);
 
-                    var getRoute = $"http://{host}:{port}/Bus/Q";
+                    string busToUpdate = "Q";
+
+                    var getRoute = $"http://{host}:{port}/Bus/{busToUpdate}";
                     var getResponse = client.GetAsync(getRoute);
 
-                    var result = getResponse.Result;
-
-                    if (result.StatusCode.Equals(HttpStatusCode.OK)) {
+                    if (getResponse.Result.StatusCode.Equals(HttpStatusCode.OK)) {
                         Console.WriteLine("Bus found, adding 1 passenger");
                         
-                        x++;
-
-                        dynamic jsonObject = JsonConvert.DeserializeObject(result.Content.ReadAsStringAsync().Result.ToString());
-
-                        var putRoute = $"http://{host}:{port}/Bus/{jsonObject.id}";
-                        var putData = new{ id = (string)jsonObject.id, driverName = (string)jsonObject.driverName, color = (string)jsonObject.color, passengersCapacity = x};
-                        var putResponse = client.PutAsJsonAsync(putRoute, putData).Result;
+                        var putRoute = $"http://{host}:{port}/Bus/{busToUpdate}/add-passenger";
+                        var putResponse = client.PostAsync(putRoute, null).Result;
                         Console.WriteLine(putResponse.Content.ReadAsStringAsync().Result.ToString());                 
                     } else {
                         Console.WriteLine("Bus not found");
-                        x = 0;
                     }
                 } catch (Exception) {
                     Console.WriteLine("Waiting");

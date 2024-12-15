@@ -71,6 +71,25 @@ namespace SimpleWebAPI.Controllers
             return Ok(bus);
         }
 
+        [HttpPost("{id}/add-passenger")]
+        [ProducesResponseType(typeof(Bus), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Bus), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Bus), StatusCodes.Status400BadRequest)]
+        public ActionResult<Bus> addPassengerToBus(string id)
+        {
+            if (!busRepository.Contains(id))
+            {
+                return NotFound($"Bus with Id {id} not found");
+            }
+
+            Bus bus = busRepository.Get(id);
+            bus.PassengersCapacity++;
+
+            busRepository.Update(bus);
+
+            return Ok(bus);
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(Bus), StatusCodes.Status404NotFound)]
