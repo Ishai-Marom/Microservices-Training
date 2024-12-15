@@ -35,8 +35,9 @@ namespace InitialProject.Infrastracture
             var query = $@"
             CREATE TABLE {CONFIG.TableName} (
                 id VARCHAR(50) PRIMARY KEY,
-                first_name VARCHAR(50) NOT NULL,
-                last_name VARCHAR(50) NOT NULL
+                driverName VARCHAR(50) NOT NULL,
+                color VARCHAR(50) NOT NULL,
+                passengersCapacity INT NOT NULL
             )";
             using var cmd = new NpgsqlCommand(query, connection);
 
@@ -53,7 +54,7 @@ namespace InitialProject.Infrastracture
             cmd.ExecuteNonQuery();
         }
 
-        public SomeDataEntity Get(string key)
+        public Bus Get(string key)
         {
             string query = $"SELECT * from {CONFIG.TableName} where id = @id";
 
@@ -62,27 +63,30 @@ namespace InitialProject.Infrastracture
             using var reader = cmd.ExecuteReader();
             reader.Read();
 
-            return new SomeDataEntity(
+            return new Bus(
                 reader["id"].ToString(),
-                reader["first_name"].ToString(),
-                reader["last_name"].ToString());
+                reader["driverName"].ToString(),
+                reader["color"].ToString(),
+                Convert.ToInt32(reader["passengersCapacity"]));
         }
 
-        public void Update(SomeDataEntity value)
+        public void Update(Bus value)
         {
             string query = $"""
-                INSERT INTO {CONFIG.TableName} (id, first_name, last_name)
-                VALUES (@id, @first_name, @last_name)
+                INSERT INTO {CONFIG.TableName} (id, driverName, color, passengersCapacity)
+                VALUES (@id, @driverName, @color, @passengersCapacity)
                 ON CONFLICT (id)
                 DO UPDATE SET
-                    first_name = EXCLUDED.first_name,
-                    last_name = EXCLUDED.last_name;
+                    driverName = EXCLUDED.driverName,
+                    color = EXCLUDED.color,
+                    passengersCapacity = EXCLUDED.passengersCapacity
                 """;
 
             using var cmd = new NpgsqlCommand(query, connection);
             cmd.Parameters.AddWithValue("id", value.ID);
-            cmd.Parameters.AddWithValue("first_name", value.FirstName);
-            cmd.Parameters.AddWithValue("last_name", value.LastName);
+            cmd.Parameters.AddWithValue("driverName", value.DriverName);
+            cmd.Parameters.AddWithValue("color", value.Color);
+            cmd.Parameters.AddWithValue("passengersCapacity", value.PassengersCapacity);
 
             cmd.ExecuteNonQuery();
         }

@@ -18,19 +18,21 @@ namespace InitialProject.Infrastracture
             database = connection.GetDatabase();
         }
 
-        public SomeDataEntity Get(string key)
+        public Bus Get(string key)
         {
             var value = database.HashGetAll(key);
             var dict = value.ToDictionary();
 
             /*Converting the (field-name, field-value) dictionary read from redis to data for the class.*/
-            return new SomeDataEntity(
+            dict[new RedisValue("passengersCapacity")].TryParse(out int passengersCapacity);
+            return new Bus(
                             dict[new RedisValue("id")].ToString(),
-                            dict[new RedisValue("FirstName")].ToString(),
-                            dict[new RedisValue("LastName")].ToString());
+                            dict[new RedisValue("driverName")].ToString(),
+                            dict[new RedisValue("color")].ToString(),
+                            passengersCapacity);
         }
 
-        public void Update(SomeDataEntity value)
+        public void Update(Bus value)
         {
             /* Creating a hash-set pf key-value data that represent the fields in redis.
                 left value = field name. right value = field data.
@@ -39,8 +41,9 @@ namespace InitialProject.Infrastracture
                 value.ID,
                 [
                     new ("id", value.ID),
-                    new ("FirstName", value.FirstName),
-                    new ("LastName", value.LastName)
+                    new ("driverName", value.DriverName),
+                    new ("color", value.Color),
+                    new ("passengersCapacity", value.PassengersCapacity)
                 ]);
         }
 

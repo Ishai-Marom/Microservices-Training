@@ -7,19 +7,19 @@ namespace InitialProject.Infrastracture
     */
     internal class InMemoryRepository : IRepository
     {
-        private readonly IDictionary<string, SomeDataEntity> objectCache;
+        private readonly IDictionary<string, Bus> objectCache;
 
         public InMemoryRepository()
         {
-            objectCache = new Dictionary<string, SomeDataEntity>();
+            objectCache = new Dictionary<string, Bus>();
         }
 
-        public void Update(SomeDataEntity value)
+        public void Update(Bus value)
         {
             objectCache.Add(value.ID, value);
         }
 
-        public SomeDataEntity Get(string key)
+        public Bus Get(string key)
         {
             return objectCache[key];
         }
