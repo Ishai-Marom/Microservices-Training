@@ -1,6 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace WebAPIConsumer
 {
@@ -13,32 +16,63 @@ namespace WebAPIConsumer
             var port = Environment.GetEnvironmentVariable("PORT") ?? "5186";
 
             // POST
-            var postRoute = $"http://{host}:{port}/AttemptNew";
-            var postData = new{ id = "Q", firstName = "AAAAAAAA", lastName = "BBBBBB"};
-            var postResponse = client.PostAsJsonAsync(postRoute, postData).Result;
+            // var postRoute = $"http://{host}:{port}/Bus";
+            // var postData = new{ id = "Q", driverName = "AAAAAAAA", color = "BBBBBB", passengersCapacity = 15};
+            // var postResponse = client.PostAsJsonAsync(postRoute, postData).Result;
 
-            Console.WriteLine(postResponse.Content.ReadAsStringAsync().Result.ToString());
+            // Console.WriteLine(postResponse.Content.ReadAsStringAsync().Result.ToString());
 
-            // PUT
-            var putRoute = $"http://{host}:{port}/AttemptNew/Q";
-            var putData = new{ id = "Q", firstName = "AAAAAAAA", lastName = "TTTTTTTTTtt"};
-            var putResponse = client.PutAsJsonAsync(putRoute, putData).Result;
+            // // PUT
+            // var putRoute = $"http://{host}:{port}/Bus/Q";
+            // var putData = new{ id = "Q", driverName = "AAAAAAAA", color = "EEEEEEEEE", passengersCapacity = 30};
+            // var putResponse = client.PutAsJsonAsync(putRoute, putData).Result;
 
-            Console.WriteLine(putResponse.Content.ReadAsStringAsync().Result.ToString());
+            // Console.WriteLine(putResponse.Content.ReadAsStringAsync().Result.ToString());
 
-            // GET
-            var getRoute = $"http://{host}:{port}/AttemptNew/Q";
-            var getResponse = client.GetAsync(getRoute).Result;
+            // // GET
+            // var getRoute = $"http://{host}:{port}/Bus/Q";
+            // var getResponse = client.GetAsync(getRoute).Result;
 
-            Console.WriteLine(getResponse.Content.ReadAsStringAsync().Result.ToString());
+            // Console.WriteLine(getResponse.Content.ReadAsStringAsync().Result.ToString());
 
-            // DELETE
-            var deleteRoute = $"http://{host}:{port}/AttemptNew/Q";
-            var deleteResponse = client.DeleteAsync(deleteRoute).Result;
+            // // DELETE
+            // var deleteRoute = $"http://{host}:{port}/Bus/Q";
+            // var deleteResponse = client.DeleteAsync(deleteRoute).Result;
 
-            Console.WriteLine(deleteResponse.Content.ReadAsStringAsync().Result.ToString());
+            // Console.WriteLine(deleteResponse.Content.ReadAsStringAsync().Result.ToString());
 
-            Console.WriteLine("Hello, World!");
+            Console.WriteLine("Strarting passengers entry app.");
+            int x = 0;
+
+            while (true)
+            {
+                try {
+                    Thread.Sleep(5000);
+
+                    var getRoute = $"http://{host}:{port}/Bus/Q";
+                    var getResponse = client.GetAsync(getRoute);
+
+                    var result = getResponse.Result;
+
+                    if (result.StatusCode.Equals(HttpStatusCode.OK)) {
+                        Console.WriteLine("Bus found, adding 1 passenger");
+                        
+                        x++;
+
+                        dynamic jsonObject = JsonConvert.DeserializeObject(result.Content.ReadAsStringAsync().Result.ToString());
+
+                        var putRoute = $"http://{host}:{port}/Bus/{jsonObject.id}";
+                        var putData = new{ id = (string)jsonObject.id, driverName = (string)jsonObject.driverName, color = (string)jsonObject.color, passengersCapacity = x};
+                        var putResponse = client.PutAsJsonAsync(putRoute, putData).Result;
+                        Console.WriteLine(putResponse.Content.ReadAsStringAsync().Result.ToString());                 
+                    } else {
+                        Console.WriteLine("Bus not found");
+                        x = 0;
+                    }
+                } catch (Exception) {
+                    Console.WriteLine("Waiting");
+                }
+            }
         }
     }
 }
