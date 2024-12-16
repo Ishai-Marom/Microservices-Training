@@ -17,7 +17,9 @@ namespace SimpleWebAPI.Controllers
             * My guess is that it recreates this controller every time an HTTP command is received.
             * Therefore, used a singleton so that memory will be saved between the HTTP commands.
             */
-            busRepository = PostgresSQLRepository.GetInstance();
+
+            /** TODO: Switch this between <see cref="PostgresSQLRepository"/> And <see cref="RedisBusRepository"> */
+            busRepository = RedisBusRepository.GetInstance();
         }
 
         [HttpGet("{id}")]
@@ -82,7 +84,17 @@ namespace SimpleWebAPI.Controllers
         {
             // TODO: add 1 passenger to a bus if it exists, otherwise return NotFound Response with some message.
 
-            throw new NotImplementedException();
+            if (!busRepository.Contains(id))
+            {
+                return NotFound($"Bus with Id {id} not found");
+            }
+
+            Bus bus = busRepository.Get(id);
+            bus.PassengersCapacity++;
+
+            busRepository.Update(bus);
+
+            return Ok(bus);
         }
     }
 }
